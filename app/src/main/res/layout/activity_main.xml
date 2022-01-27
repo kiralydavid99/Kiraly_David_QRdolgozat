@@ -26,15 +26,8 @@
         android:layout_height="wrap_content"
         android:text="KIÍR"
         android:id="@+id/btn_kiir"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/image_result"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:id="@+id/edit_text_qr"/>
+
+
 
 
 </LinearLayout>
