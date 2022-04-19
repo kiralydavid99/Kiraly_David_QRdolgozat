@@ -100,9 +100,9 @@ public class MainActivity extends AppCompatActivity {
     public void filebaIras(String adat) throws IOException {
         Date datum = Calendar.getInstance().getTime();
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String formazottDatum = df.format(datum);
-        String sor = String.format("%s, %s", formazottDatum, adat);
+        SimpleDateFormat datumformazas = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formazasDatum = datumformazas.format(datum);
+        String sor = String.format("%s, %s", formazasDatum, adat);
 
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)){
