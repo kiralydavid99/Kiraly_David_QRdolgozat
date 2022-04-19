@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +18,13 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
                 intentIntegrator.setPrompt("QR SCAN");
                 intentIntegrator.setCameraId(0);
+                intentIntegrator.setBeepEnabled(false);
                 intentIntegrator.initiateScan();
 
             }
@@ -47,11 +55,21 @@ public class MainActivity extends AppCompatActivity {
         btnKiir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (textResult.getText().toString().equals("")){
+                    Toast.makeText(MainActivity.this, "Nincs adat", Toast.LENGTH_SHORT).show();
+                }else{
+                    try {
+                        filebaIras(textResult.getText().toString());
+                        Toast.makeText(MainActivity.this, "Sikeres file-ba írás!", Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
-
     }
+
+
 
 
 
@@ -78,6 +96,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+    public void filebaIras(String adat) throws IOException {
+        Date datum = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formazottDatum = df.format(datum);
+        String sor = String.format("%s, %s", formazottDatum, adat);
+
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)){
+            File file = new File(Environment.getExternalStorageDirectory(), "scannedCodes.csv");
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+
+            bw.append(sor);
+            bw.append(System.lineSeparator());
+            bw.close();
+        }
     }
 
     public void init(){
